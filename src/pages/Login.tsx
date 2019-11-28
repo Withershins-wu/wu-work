@@ -2,17 +2,15 @@ import React, { useState } from "react";
 import { Form, Button, Checkbox, Input, Icon } from "antd";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { Logo } from "../components";
+
+
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 5vh;
-`;
-const Logo = styled.img.attrs({
-  src: "/logo512.png"
-})`
-  width: 50px;
 `;
 const Box = styled.div`
   border: 1px solid #d8dee2;
@@ -89,7 +87,7 @@ function Login({ form: { getFieldDecorator, validateFields } }) {
             <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
               {isRegister ? "注册" : "登录"}
             </Button>
-            {isRegister ? '已有账号 ':'还没有账号 '}
+            {isRegister ? "已有账号 " : "还没有账号 "}
             <a href="javascript:;" onClick={() => setIsRegister(!isRegister)}>
               {isRegister ? "立刻登录!" : "立刻注册!"}
             </a>
