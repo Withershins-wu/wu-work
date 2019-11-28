@@ -1,0 +1,49 @@
+.router-wrapper {
+  overflow: hidden;
+}
+.rotate-enter {
+  opacity: 0;
+  transform: rotateY(180deg);
+}
+
+.rotate-enter-active {
+  opacity: 1;
+  transform: rotateY(0deg);
+  transition: all 500ms;
+}
+
+.rotate-exit {
+  opacity: 1;
+  transform: rotateY(-180deg);
+}
+
+.rotate-exit-active {
+  opacity: 0;
+  transform: rotateY(0deg);
+  transition: all 500ms;
+}
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: all 500ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: all 500ms;
+}
+
+#root {
+  background: #f9f9f9;
+  height: 100vh;
+}
+body {
+  margin: 0;
+}
