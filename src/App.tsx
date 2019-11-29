@@ -1,7 +1,7 @@
-import React, { lazy } from "react";
+import React, { lazy, Suspense } from "react";
 import { Route, Switch, useLocation, Link, Redirect } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout, Menu, Breadcrumb, Skeleton } from "antd";
 import { Logo as Lo } from "./components";
 import styled from "styled-components";
 import "./index.css";
@@ -32,7 +32,7 @@ const Logo = styled(Lo)`
 
 function App() {
   const location = useLocation();
-  console.log(location)
+  console.log(location);
   return (
     <Layout style={{ height: "100%" }}>
       <Header>
@@ -55,16 +55,12 @@ function App() {
         </Menu>
       </Header>
       <Content style={{ padding: "0 50px" }}>
-        <Breadcrumb style={{ margin: "16px 0" }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
         <div
           style={{
             background: "#fff",
             padding: 24,
             minHeight: 280,
+            margin: '16px 0',
             height: "calc(100% - 40px)",
             overflow: "auto"
           }}
@@ -76,16 +72,19 @@ function App() {
               key={location.pathname}
               unmountOnExit
             > */}
-          <Switch location={location}>
-            {routes.map(route => (
-              <Route
-                key={route.path}
-                exact
-                path={route.path}
-                component={route.component}
-              />
-            ))}
-          </Switch>
+          <Suspense fallback={<Skeleton loading active avatar />}>
+            <Switch location={location}>
+              {routes.map(route => (
+                <Route
+                  key={route.path}
+                  exact
+                  path={route.path}
+                  component={route.component}
+                />
+              ))}
+            </Switch>
+          </Suspense>
+
           {/* </CSSTransition>
           </TransitionGroup> */}
         </div>

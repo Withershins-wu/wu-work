@@ -47,6 +47,9 @@ const Question = styled(List.Item)`
     position: absolute;
     left: 5px;
   }
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const Avatar = styled.i`
@@ -63,14 +66,14 @@ const Avatar = styled.i`
 `;
 const Search = styled(Input.Search)`
   && {
-    width: 250px;
+    width: 230px;
     margin-bottom: 15px;
   }
 `;
 const QuestionList = styled(List)`
   && {
-    height: calc(100% - 90px);
-    overflow: auto;
+    max-height: calc(100% - 90px);
+    overflow: overlay;
   }
 `;
 

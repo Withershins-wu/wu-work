@@ -47,6 +47,24 @@
 body {
   margin: 0;
 }
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+  background-color: #fff;
+}
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #fff;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #c1c1c1;
 }
