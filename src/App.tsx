@@ -1,5 +1,12 @@
-import React, { lazy, Suspense } from "react";
-import { Route, Switch, useLocation, Link, Redirect } from "react-router-dom";
+import React, { lazy, Suspense, useEffect } from "react";
+import {
+  Route,
+  Switch,
+  useLocation,
+  useHistory,
+  Link,
+  Redirect
+} from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { Layout, Menu, Breadcrumb, Skeleton } from "antd";
 import { Logo as Lo } from "./components";
@@ -32,7 +39,14 @@ const Logo = styled(Lo)`
 
 function App() {
   const location = useLocation();
-  console.log(location);
+  const history = useHistory();
+  useEffect(() => {
+    if (false) {
+      history.push("/questions");
+    } else {
+      history.push("/login");
+    }
+  }, []);
   return (
     <Layout style={{ height: "100%" }}>
       <Header>
@@ -60,7 +74,7 @@ function App() {
             background: "#fff",
             padding: 24,
             minHeight: 280,
-            margin: '16px 0',
+            margin: "16px 0",
             height: "calc(100% - 40px)",
             overflow: "auto"
           }}

@@ -22,7 +22,7 @@ const Box = styled.div`
 `;
 
 function Login({ form: { getFieldDecorator, validateFields } }) {
-  const [isRegister, setIsRegister] = useState(true);
+  const [isRegister, setIsRegister] = useState(false);
   const history = useHistory();
   const handleSubmit = e => {
     e.preventDefault();
