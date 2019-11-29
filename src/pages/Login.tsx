@@ -4,8 +4,6 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Logo } from "../components";
 
-
-
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +29,7 @@ function Login({ form: { getFieldDecorator, validateFields } }) {
         if (isRegister) {
           // 注册
         } else {
+          localStorage.setItem("user", JSON.stringify(values));
           history.push("/");
         }
       }

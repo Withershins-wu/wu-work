@@ -41,7 +41,8 @@ function App() {
   const location = useLocation();
   const history = useHistory();
   useEffect(() => {
-    if (false) {
+    let user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
       history.push("/questions");
     } else {
       history.push("/login");
