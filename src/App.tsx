@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import {
   Route,
   Switch,
@@ -8,7 +8,7 @@ import {
   Redirect
 } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { Layout, Menu, Breadcrumb, Skeleton } from "antd";
+import { Layout, Menu, Breadcrumb, Skeleton, Popover } from "antd";
 import { Logo as Lo } from "./components";
 import styled from "styled-components";
 import "./index.css";
@@ -36,12 +36,29 @@ const Logo = styled(Lo)`
   margin: 16px 24px 16px 0;
   float: left;
 `;
+const Logout = styled.div`
+  cursor: pointer;
+`;
+const UserLogo = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  right: 20px;
+  top: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 40px;
+  font-weight: 900;
+  overflow: hidden;
+`;
 
 function App() {
   const location = useLocation();
   const history = useHistory();
+  let user = JSON.parse(sessionStorage.getItem("user"))
   useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       history.push("/questions");
     } else {
@@ -68,6 +85,20 @@ function App() {
             <Link to="/practice">练习</Link>
           </Menu.Item>
         </Menu>
+        <Popover
+          content={
+            <Logout
+              onClick={() => {
+                sessionStorage.removeItem("user");
+                history.push("/login");
+              }}
+            >
+              退出
+            </Logout>
+          }
+        >
+          <UserLogo>{user && user.email}</UserLogo>
+        </Popover>
       </Header>
       <Content style={{ padding: "0 50px" }}>
         <div

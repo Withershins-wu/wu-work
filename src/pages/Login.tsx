@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Form, Button, Checkbox, Input, Icon } from "antd";
+import { Form, Button, Checkbox, Input, Icon, message } from "antd";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Logo } from "../components";
+import { login, register } from "@/services/login";
 
 const Wrap = styled.div`
   display: flex;
@@ -19,8 +20,9 @@ const Box = styled.div`
   background: #fff;
 `;
 
-function Login({ form: { getFieldDecorator, validateFields } }) {
+function Login({ form: { getFieldDecorator, validateFields, getFieldValue } }) {
   const [isRegister, setIsRegister] = useState(false);
+  const [confirmDirty, setConfirmDirty] = useState(false);
   const history = useHistory();
   const handleSubmit = e => {
     e.preventDefault();
@@ -28,9 +30,29 @@ function Login({ form: { getFieldDecorator, validateFields } }) {
       if (!err) {
         if (isRegister) {
           // 注册
+          register(values).then(data => {
+            if (data.code === 200) {
+              message.success(data.msg);
+              setIsRegister(false);
+            } else {
+              message.info(data && data.msg);
+            }
+          });
         } else {
-          localStorage.setItem("user", JSON.stringify(values));
-          history.push("/");
+          login({
+            email: values.email,
+            pwd: values.pwd
+          }).then(data => {
+            if (data.code === 200) {
+              sessionStorage.setItem(
+                "user",
+                JSON.stringify({ email: values.email })
+              );
+              history.push("/");
+            } else {
+              message.info(data && data.msg);
+            }
+          });
         }
       }
     });
@@ -60,8 +82,18 @@ function Login({ form: { getFieldDecorator, validateFields } }) {
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator("password", {
-              rules: [{ required: true, message: "请输入密码!" }]
+            {getFieldDecorator("pwd", {
+              rules: [
+                { required: true, message: "请输入密码!" },
+                {
+                  validator(rule, value, callback) {
+                    if (value && confirmDirty) {
+                      validateFields(["rePwd"], { force: true });
+                    }
+                    callback();
+                  }
+                }
+              ]
             })(
               <Input
                 prefix={
@@ -72,6 +104,37 @@ function Login({ form: { getFieldDecorator, validateFields } }) {
               />
             )}
           </Form.Item>
+          {isRegister && (
+            <Form.Item>
+              {getFieldDecorator("rePwd", {
+                rules: [
+                  { required: true, message: "请再次输入密码!" },
+                  {
+                    validator(rule, value, callback) {
+                      if (value && value !== getFieldValue("pwd")) {
+                        callback("前后密码不一致");
+                      }
+                      callback();
+                    }
+                  }
+                ]
+              })(
+                <Input
+                  prefix={
+                    <Icon
+                      type="safety-certificate"
+                      style={{ color: "rgba(0,0,0,.25)" }}
+                    />
+                  }
+                  type="password"
+                  onBlur={e => {
+                    setConfirmDirty(confirmDirty || !!e.target.value);
+                  }}
+                  placeholder="重复密码"
+                />
+              )}
+            </Form.Item>
+          )}
           <Form.Item>
             {!isRegister &&
               getFieldDecorator("remember", {
