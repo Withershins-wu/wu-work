@@ -3,7 +3,7 @@ import { Form, Button, Checkbox, Input, Icon, message } from "antd";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Logo } from "../components";
-import { login, register } from "@/services/login";
+import { login, register } from "../services/login";
 
 const Wrap = styled.div`
   display: flex;
@@ -42,15 +42,15 @@ function Login({ form: { getFieldDecorator, validateFields, getFieldValue } }) {
           login({
             email: values.email,
             pwd: values.pwd
-          }).then(data => {
-            if (data.code === 200) {
+          }).then(res => {
+            if (res.code === 200) {
               sessionStorage.setItem(
                 "user",
-                JSON.stringify({ email: values.email })
+                JSON.stringify({ email: values.email, ...res.data })
               );
               history.push("/");
             } else {
-              message.info(data && data.msg);
+              message.info(res && res.msg);
             }
           });
         }

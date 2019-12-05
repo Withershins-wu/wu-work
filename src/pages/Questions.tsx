@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { List, Input, Pagination } from "antd";
 import styled from "styled-components";
+import { getPractices } from "../services/practice";
 
 const data = [
   {
@@ -78,28 +79,40 @@ const QuestionList = styled(List)`
 `;
 
 function Questions() {
+  const [data, setData] = useState<any>({ total: 0, rowsList: [] });
+  const [params, setParams] = useState({ pageSize: 10, pageNum: 1, title: "" });
+  useEffect(() => {
+    getPractices(params).then(res => {
+      if (res.code === 200) {
+        setData(res.data);
+      }
+    });
+  }, [params]);
   return (
     <>
       <Search
         placeholder="搜索题库..."
-        onSearch={value => console.log(value)}
+        onSearch={title => setParams(params => ({ ...params, title }))}
       />
       <QuestionList
         itemLayout="horizontal"
-        dataSource={data}
+        dataSource={data.rowsList}
         renderItem={(item, index) => (
           <Question>
             <Avatar>{index}</Avatar>
-            <a href={item.link}>{item.name}</a>
+            <a href={item.url}>{item.title}</a>
           </Question>
         )}
       />
-      <Pagination
-        style={{ textAlign: "center", marginTop: 5 }}
-        simple
-        defaultCurrent={2}
-        total={50}
-      />
+      {data.total > 0 && (
+        <Pagination
+          style={{ textAlign: "center", marginTop: 5 }}
+          simple
+          current={params.pageNum}
+          total={data.total}
+          onChange={pageNum => setParams(params => ({ ...params, pageNum }))}
+        />
+      )}
     </>
   );
 }

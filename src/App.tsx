@@ -40,6 +40,7 @@ const Logout = styled.div`
   cursor: pointer;
 `;
 const UserLogo = styled.div`
+  text-align: center;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -57,10 +58,12 @@ const UserLogo = styled.div`
 function App() {
   const location = useLocation();
   const history = useHistory();
-  let user = JSON.parse(sessionStorage.getItem("user"))
+  let user = JSON.parse(sessionStorage.getItem("user"));
   useEffect(() => {
     if (user) {
-      history.push("/questions");
+      history.push(
+        location.pathname === "/" ? "/questions" : location.pathname
+      );
     } else {
       history.push("/login");
     }
@@ -97,7 +100,7 @@ function App() {
             </Logout>
           }
         >
-          <UserLogo>{user && user.email}</UserLogo>
+          <UserLogo>{user && user.name.slice(-1)}</UserLogo>
         </Popover>
       </Header>
       <Content style={{ padding: "0 50px" }}>

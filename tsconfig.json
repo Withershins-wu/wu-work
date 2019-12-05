@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,11 +17,13 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "typeRoots": ["./node_modules/@types", "./src/index.d.ts"],
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/index.d.ts"
+    ],
+    "baseUrl": "./"
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }

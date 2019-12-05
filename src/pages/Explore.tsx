@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Input } from "antd";
 import styled from "styled-components";
 import { useTransition, useSpring, animated } from "react-spring";
+import { getLikePractices } from "../services/practice";
 
 const Wrap = styled.div`
   display: flex;
@@ -37,15 +38,17 @@ const Question = styled(animated.a).attrs(p => ({ href: p.link }))`
 `;
 
 interface QuestionI extends G.AnyObject {
-  name: string;
-  link: string;
+  title: string;
+  id: string|number;
+  url: string;
 }
 
 function Explore() {
   const [questions, setQuestions] = useState<QuestionI[]>([]);
+
   const transitions = useTransition(
     questions.map((item, index) => ({ ...item, index })),
-    item => item.link,
+    item => item.url,
     {
       from: {
         opacity: 0,
@@ -66,24 +69,11 @@ function Explore() {
   );
   const handleSearch = value => {
     if (value) {
-      setQuestions([
-        {
-          name: "床前明月光",
-          link: "1"
-        },
-        {
-          name: "疑是地上霜",
-          link: "2"
-        },
-        {
-          name: "举头望明月",
-          link: "3"
-        },
-        {
-          name: "低头思故乡",
-          link: "4"
+      getLikePractices({ title: value }).then(res => {
+        if (res.code === 200) {
+          setQuestions(res.data.rowsList);
         }
-      ]);
+      });
     } else {
       setQuestions([]);
     }
@@ -97,8 +87,8 @@ function Explore() {
       />
       <QuestionWrap>
         {transitions.map(({ item, props, key }) => (
-          <Question key={key} style={props} link={item.link}>
-            {item && item.name}
+          <Question key={key} style={props} link={item.url}>
+            {item && item.title}
           </Question>
         ))}
       </QuestionWrap>
