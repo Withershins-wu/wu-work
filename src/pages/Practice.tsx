@@ -19,9 +19,18 @@ import {
 const Question = styled(List.Item)`
   && {
     padding: 12px 10px;
-    justify-content: space-between;
+    justify-content: center;
     &:hover {
       background: rgba(0, 0, 0, 0.1);
+    }
+    i {
+      position:absolute;
+      left: 5px;
+    }
+    span {
+      position:absolute;
+      right: 0;
+      width: 60px;
     }
   }
 `;
@@ -58,7 +67,7 @@ function Practice({
   const [data, setData] = useState<any>({ total: 0, rowsList: [] });
   const [questions, setQuestions] = useState<any>([]);
   const [params, setParams] = useState<any>({
-    id: user.id,
+    userId: user.id,
     pageNum: 1,
     pageSize: 10
   });
@@ -68,7 +77,7 @@ function Practice({
         addPracticesHistory({ ...values, userId: user.id }).then(res => {
           if (res.code === 200) {
             setVis(false);
-            setParams({ id: user.id, pageNum: 1, pageSize: 10 });
+            setParams({ userId: user.id, pageNum: 1, pageSize: 10 });
           }
         });
       }
@@ -104,7 +113,7 @@ function Practice({
         renderItem={(item, index) => (
           <Question>
             <Avatar>{index}</Avatar>
-            <a href={item.link || ""}>{item.name}</a>
+            <a href={item.url || ""}>{item.title}</a>
             <span style={{ color: item.status ? "#1fa91f" : "#ef3d3d" }}>
               {item.status ? "通过" : "未通过"}
             </span>
@@ -116,7 +125,7 @@ function Practice({
           style={{ textAlign: "center", marginTop: 5 }}
           simple
           current={params.pageNum}
-          total={data.tota}
+          total={data.total}
           onChange={pageNum => setParams(params => ({ ...params, pageNum }))}
         />
       )}
