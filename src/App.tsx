@@ -100,7 +100,7 @@ function App() {
             </Logout>
           }
         >
-          <UserLogo>{user && user.name.slice(-1)}</UserLogo>
+          <UserLogo>{user && (user.name||'某人').slice(-1)}</UserLogo>
         </Popover>
       </Header>
       <Content style={{ padding: "0 50px" }}>
