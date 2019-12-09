@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "antd";
 import styled from "styled-components";
-import { useTransition, useSpring, animated } from "react-spring";
-import { getLikePractices, getRecommendPractices } from "../services/practice";
+import { useTransition, animated } from "react-spring";
+import { getLikePractices } from "../services/practice";
 
 const Wrap = styled.div`
   display: flex;
@@ -15,19 +15,7 @@ const Search = styled(Input.Search)`
     margin-left: 10%;
   }
 `;
-const RecommendWrap = styled.div`
-  width: 60%;
-  margin-top: 10px;
-  display: flex;
-  div {
-    font-weight: bold;
-  }
-  div,
-  a {
-    margin-right: 10px;
-  }
-`;
-const Recommend = styled(animated.a)``;
+
 const QuestionWrap = styled.div`
   width: 60%;
   margin-top: 20px;
@@ -58,15 +46,6 @@ interface QuestionI extends G.AnyObject {
 
 function Explore() {
   const [questions, setQuestions] = useState<QuestionI[]>([]);
-  const [recommends, setRecommends] = useState<QuestionI[]>([]);
-  useEffect(() => {
-    const { id: userId } = JSON.parse(sessionStorage.getItem("user"));
-    getRecommendPractices({ userId }).then(res => {
-      if (res.code === 200) {
-        setRecommends(res.data as QuestionI[]);
-      }
-    });
-  }, []);
   const transitions = useTransition(
     questions.map((item, index) => ({ ...item, index })),
     item => item.url,
@@ -88,24 +67,7 @@ function Explore() {
       config: { mass: 5, tension: 500, friction: 100 }
     }
   );
-  const recommendTransitions = useTransition(
-    recommends.map((item, index) => ({ ...item, index })),
-    item => item.url,
-    {
-      from: {
-        opacity: 0
-      },
-      enter: {
-        opacity: 1
-      },
-      leave: {
-        opacity: 0
-      },
-      unique: true,
-      trail: 50,
-      config: { mass: 5, tension: 500, friction: 100 }
-    }
-  );
+
   const handleSearch = value => {
     if (value) {
       getLikePractices({ title: value }).then(res => {
@@ -124,16 +86,7 @@ function Explore() {
         placeholder="搜索类似题目..."
         onSearch={handleSearch}
       />
-      {recommends.length > 0 && (
-        <RecommendWrap>
-          <div>推荐:</div>
-          {recommendTransitions.map(({ item, props, key }) => (
-            <Recommend key={key} style={props} href={item.url}>
-              {item && item.title}
-            </Recommend>
-          ))}
-        </RecommendWrap>
-      )}
+
       <QuestionWrap>
         {transitions.map(({ item, props, key }) => (
           <Question key={key} style={props} href={item.url}>

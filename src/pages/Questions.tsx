@@ -99,14 +99,14 @@ function Questions() {
         dataSource={data.rowsList}
         renderItem={(item, index) => (
           <Question>
-            <Avatar>{index}</Avatar>
+            <Avatar>{index + 1}</Avatar>
             <a href={item.url}>{item.title}</a>
           </Question>
         )}
       />
       {data.total > 0 && (
         <Pagination
-          style={{ textAlign: "center", marginTop: 5 }}
+          style={{ textAlign: "center", marginTop: 20 }}
           simple
           current={params.pageNum}
           total={data.total}
