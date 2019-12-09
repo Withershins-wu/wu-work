@@ -12,3 +12,8 @@ export function getPractices(params: G.AnyObject): Promise<G.Response> {
 export function getPracticesHistory(params: G.AnyObject): Promise<G.Response> {
   return request.post("/practice/getPracticesHistory", params);
 }
+export function getRecommendPractices(
+  params: G.AnyObject
+): Promise<G.Response> {
+  return request.get("/practice/getRecommendPractices", { params });
+}
