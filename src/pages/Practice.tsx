@@ -10,6 +10,7 @@ import {
   Select
 } from "antd";
 import { useTransition, useSpring, animated } from "react-spring";
+import debounce from 'lodash/debounce';
 import styled from "styled-components";
 import {
   getPracticesHistory,
@@ -88,6 +89,7 @@ function Practice({
     pageNum: 1,
     pageSize: 10
   });
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
     const { id: userId } = JSON.parse(sessionStorage.getItem("user"));
@@ -119,12 +121,16 @@ function Practice({
     });
   }, [params]);
   useEffect(() => {
-    getPractices({}).then(res => {
-      if (res.code === 200) {
-        setQuestions(res.data.rowsList);
-      }
-    });
-  }, []);
+    if (!title) {
+      setQuestions([]);
+    } else {
+      getPractices({ title }).then(res => {
+        if (res.code === 200) {
+          setQuestions(res.data.rowsList.slice(0, 50));
+        }
+      });
+    }
+  }, [title]);
 
   const transitions = useTransition(
     recommends.map((item, index) => ({ ...item, index })),
@@ -204,7 +210,13 @@ function Practice({
             {getFieldDecorator("title", {
               rules: [{ required: true, message: "请输入题目名称或编号" }]
             })(
-              <Select placeholder="请输入题目名称或编号">
+              <Select
+                showSearch
+                onSearch={debounce(val => setTitle(val), 500)}
+                notFoundContent={null}
+                showArrow={false}
+                placeholder="请输入题目名称或编号"
+              >
                 {questions.map(item => (
                   <Select.Option key={item.title}>{item.title}</Select.Option>
                 ))}
