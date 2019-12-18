@@ -164,7 +164,7 @@ function Practice({
         </Button>
         {recommends.length > 0 && (
           <RecommendWrap>
-            <div>推荐:</div>
+            <div style={{width: 40}}>推荐:</div>
             {transitions.map(({ item, props, key }) => (
               <Recommend key={key} style={props} href={item.url}>
                 {item && item.title}

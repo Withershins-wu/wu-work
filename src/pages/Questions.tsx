@@ -3,45 +3,6 @@ import { List, Input, Pagination } from "antd";
 import styled from "styled-components";
 import { getPractices } from "../services/practice";
 
-const data = [
-  {
-    name: "Two Sum",
-    link: "/1"
-  },
-  {
-    name: "Three Sum",
-    link: "/1"
-  },
-  {
-    name: "Four Sum",
-    link: "/1"
-  },
-  {
-    name: "Two Sum",
-    link: "/1"
-  },
-  {
-    name: "Three Sum",
-    link: "/1"
-  },
-  {
-    name: "Four Sum",
-    link: "/1"
-  },
-  {
-    name: "Two Sum",
-    link: "/1"
-  },
-  {
-    name: "Three Sum",
-    link: "/1"
-  },
-  {
-    name: "Four Sum",
-    link: "/1"
-  }
-];
-
 const Question = styled(List.Item)`
   justify-content: center;
   i {
@@ -54,15 +15,15 @@ const Question = styled(List.Item)`
 `;
 
 const Avatar = styled.i`
-  width: 25px;
+  min-width: 25px;
   height: 25px;
   color: #fff;
   background: #f0ad4e;
   text-align: center;
   font-style: normal;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 25px;
-  border-radius: 50%;
+  border-radius: 25px;
   box-shadow: 3px 3px 5px #515629;
 `;
 const Search = styled(Input.Search)`
@@ -92,14 +53,16 @@ function Questions() {
     <>
       <Search
         placeholder="搜索题库..."
-        onSearch={title => setParams(params => ({ ...params, title }))}
+        onSearch={title =>
+          setParams(params => ({ ...params, pageNum: 1, title }))
+        }
       />
       <QuestionList
         itemLayout="horizontal"
         dataSource={data.rowsList}
         renderItem={(item, index) => (
           <Question>
-            <Avatar>{index + 1}</Avatar>
+            <Avatar>{10 * (params.pageNum - 1) + index + 1}</Avatar>
             <a href={item.url}>{item.title}</a>
           </Question>
         )}
